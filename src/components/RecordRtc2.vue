@@ -4,15 +4,16 @@
       <video v-if="!isRecording && showVideoPlayer" ref="videoPlayer" controls autoplay></video>
       <video v-else-if="isRecording" ref="previewPlayer" autoplay muted></video>
       <div class="controls mt-4">
-        <v-btn prepend-icon="mdi-stop-circle" size="x-large" v-if="isRecording" @click="stopRecording" variant="outlined" rounded="pill" color="error">
+        <v-btn prepend-icon="mdi-stop-circle" size="x-large" v-if="isRecording" @click="stopRecording" variant="outlined" rounded="pill" color="#e2515f">
           Interrompi
         </v-btn>
         <v-btn prepend-icon="mdi-download" class="mr-4" size="x-large" v-if="!isRecording" @click="downloadVideo" rounded="pill" color="blue"> Scarica </v-btn>
-        <v-btn prepend-icon="mdi-record-circle"  size="x-large" @click="startRecording" v-if="!isRecording" variant="outlined" rounded="pill" color="error"> Registra di nuovo </v-btn>
+        <v-btn prepend-icon="mdi-record-circle"  size="x-large" @click="startRecording" v-if="!isRecording" variant="outlined" rounded="pill" color="#e2515f"> Registra di nuovo </v-btn>
       </div>
     </template>
     <template v-else>
-      <v-btn prepend-icon="mdi-record-circle" size="x-large" rounded="pill" class="mx-auto" variant="outlined" @click="startRecording" color="error"> Avvia adesso </v-btn>
+      <img src="/HatchfulExport-All/logo_transparent.png" alt="Your Logo" class="logo" />
+      <v-btn prepend-icon="mdi-record-circle" size="x-large" rounded="pill" class="mx-auto" variant="outlined" @click="startRecording" color="#e2515f"> Avvia adesso </v-btn>
     </template>
   </div>
 </template>
@@ -115,5 +116,11 @@ video {
   height: 100px;
   min-width: 300px;
   width: 300px;
+}
+
+.logo {
+  width: 350px; /* Adatta la larghezza del logo secondo le tue esigenze */
+  height: auto; /* Mantiene le proporzioni corrette del logo */
+  margin: 16px 0; /* Aggiunge un margine sopra e sotto il logo */
 }
 </style>
