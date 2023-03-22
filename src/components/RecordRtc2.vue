@@ -2,7 +2,7 @@
   <div class="main-container">
     <template v-if="showVideoPlayer || isRecording">
       <video v-if="!isRecording && showVideoPlayer" ref="videoPlayer" controls autoplay></video>
-      <video v-else-if="isRecording" ref="previewPlayer" autoplay muted></video>
+      <video v-else-if="isRecording" ref="previewPlayer" autoplay muted class="animation"></video>
       <div class="controls mt-4">
         <v-btn prepend-icon="mdi-stop-circle" size="x-large" v-if="isRecording" @click="stopRecording" variant="outlined" rounded="pill" color="#e2515f">
           Interrompi
@@ -12,7 +12,7 @@
       </div>
     </template>
     <template v-else>
-      <img src="/HatchfulExport-All/logo_transparent.png" alt="Your Logo" class="logo" />
+      <img src="/HatchfulExport-All/logo_transparent.png" alt="Your Logo" class="logo animation-logo" />
       <v-btn prepend-icon="mdi-record-circle" size="x-large" rounded="pill" class="mx-auto" variant="outlined" @click="startRecording" color="#e2515f"> Avvia adesso </v-btn>
     </template>
   </div>
@@ -109,6 +109,41 @@ video {
   max-width: 100%;
   max-height: 50vh;
   margin: 8px;
+  border: 4px solid transparent;
+  border-radius: 16px;
+}
+
+
+.animation{
+  animation: intermittente 2s linear infinite
+}
+
+@keyframes intermittente {
+  0% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: rgba(226, 81, 95, 0.5); /* Scegli il colore che preferisci */
+  }
+  100% {
+    border-color: transparent;
+  }
+}
+
+.animation-logo{
+  animation: keyframelogo 2s linear infinite
+}
+
+@keyframes keyframelogo {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .sizing {
