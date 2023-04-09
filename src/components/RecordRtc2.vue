@@ -28,10 +28,11 @@ const isRecording = ref(false);
 const showVideoPlayer = ref(false);
 let recorder: any = null;
 
+let stream: any = null;
 const startRecording = async () => {
 
   try {
-    const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+    stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
     isRecording.value = true;
 
     nextTick(()=> {      
@@ -58,6 +59,8 @@ const stopRecording = async () => {
     recorder.reset();
     recorder.destroy();
     recorder = null;
+    const tracks = stream.getTracks();
+    tracks.forEach((track:any) => track.stop());
   });
 };
 
@@ -110,7 +113,7 @@ video {
   max-height: 50vh;
   margin: 8px;
   border: 4px solid transparent;
-  border-radius: 16px;
+  border-radius: 8px;
 }
 
 
