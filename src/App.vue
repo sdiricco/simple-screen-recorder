@@ -12,8 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-const icons = ["mdi-github", "mdi-twitter", "mdi-linkedin", "mdi-instagram"];
+import { onMounted } from 'vue';
+import { useMainStore} from "@/store/main"
+const mainStore = useMainStore()
+onMounted(() => {
+  mainStore.checkBrowserCompatibility();
+})
 </script>
 
 <style scoped>
