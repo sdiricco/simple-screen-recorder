@@ -96,10 +96,12 @@ export const useMainStore = defineStore("main", {
     },
     //Download file
     downloadFile(){
-      if (!this.fileBlob) {
-        return;
-      }
-      RecordRTC.invokeSaveAsDialog(this.fileBlob, 'rec.webm')
+      var link = document.createElement("a");
+      link.href = this.gifUrl || "";
+      link.download = "rec.gif";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   },
 });

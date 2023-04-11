@@ -1,11 +1,7 @@
 <template>
   <div class="main-container">
-    <video 
-      ref="videoPlayer"
-      autoplay
-      controls>
-    </video>
-    <img ref="gif" src="" class="gif-class"/>
+      <img ref="gif" src="" class="gif-class" download/>
+
     <div 
       class="controls mt-4">
 
@@ -36,11 +32,9 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import {useMainStore} from "@/store/main"
 const mainStore = useMainStore();
-const videoPlayer = ref<any>(null);
 const gif = ref<any>(null);
 
 onMounted(async () => {
-  videoPlayer.value.src = mainStore.getUrl
   gif.value.src = mainStore.gifUrl
 });
 onUnmounted(() => {
@@ -52,7 +46,9 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  position: absolute;
+  bottom: 24px;
+
 }
 .main-container {
   height: 100%;
@@ -60,17 +56,24 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow-y:auto;
+  overflow-x: hidden;
+  position: relative;
 }
 video {
   max-width: 100%;
-  max-height: 50vh;
-  margin: 8px;
+  max-height: 100%;
+  margin: 16px;
   border: 4px solid transparent;
   border-radius: 8px;
 }
 
+
+.gif-container{
+  
+}
 .gif-class{
-  max-height: 50vh;
+  max-height: calc(100vh - 100px);
 
 }
 
