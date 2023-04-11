@@ -5,6 +5,7 @@
       autoplay
       controls>
     </video>
+    <img ref="gif" src="" class="gif-class"/>
     <div 
       class="controls mt-4">
 
@@ -36,11 +37,12 @@ import { ref, onMounted, onUnmounted } from "vue";
 import {useMainStore} from "@/store/main"
 const mainStore = useMainStore();
 const videoPlayer = ref<any>(null);
+const gif = ref<any>(null);
 
 onMounted(async () => {
   videoPlayer.value.src = mainStore.getUrl
+  gif.value.src = mainStore.gifUrl
 });
-
 onUnmounted(() => {
 });
 </script>
@@ -67,5 +69,9 @@ video {
   border-radius: 8px;
 }
 
+.gif-class{
+  max-height: 50vh;
+
+}
 
 </style>

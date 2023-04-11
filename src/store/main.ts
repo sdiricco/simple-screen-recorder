@@ -6,6 +6,8 @@ interface Store {
   stream: MediaStream | null;
   sourceSelected: boolean;
   recorder: RecordRTC | null;
+  gifRecorder: RecordRTC.GifRecorder | null;
+  gifUrl: string | null;
   fileBlob: Blob | null;
   fileReady: boolean,
 
@@ -16,6 +18,8 @@ export const useMainStore = defineStore("main", {
     stream: null,
     sourceSelected: false,
     recorder: null,
+    gifRecorder: null,
+    gifUrl: null,
     fileBlob: null,
     fileReady: false,
   }),
@@ -61,39 +65,41 @@ export const useMainStore = defineStore("main", {
       if (!this.stream) {
         return
       }
-      this.recorder = new RecordRTC(this.stream, { type: "video" });
-      this.recorder.startRecording();
+      // this.recorder = new RecordRTC(this.stream, { type: "video" });
+      this.gifRecorder = new RecordRTC.GifRecorder(this.stream, { width: 1920, height: 1080, frameRate: 200, quality: 100 })
+      // this.recorder.startRecording();
+      this.gifRecorder.record();
       this.fileReady = false;
     },
-    //Stop recording
+    //Stop boh... 
     async stopRecording(){
-      if (!this.recorder) {
-        return;
-      }
-      const recorder = this.recorder;
-      await new Promise((resolve) => recorder.stopRecording(()=> resolve(true)))
-      this.fileBlob = this.recorder.getBlob()
-      this.recorder.reset();
-      this.recorder.destroy();
-      this.recorder = null;
-      this.stopSharingAllTracks();
-      this.fileReady = true;
+      // if (!this.recorder) {
+      //   return;
+      // }
+      // const recorder = this.recorder;
+      // await new Promise((resolve) => recorder.stopRecording(()=> resolve(true)))
+      // this.fileBlob = this.recorder.getBlob();
+      // this.recorder.reset();
+      // this.recorder.destroy();
+      // this.recorder = null;
+      // this.stopSharingAllTracks();
+      // this.fileReady = true;
+
+
+      const recorder = this.gifRecorder;
+      recorder.stop((blob)=> {
+        this.gifUrl = URL.createObjectURL(blob)
+        this.stopSharingAllTracks();
+        this.fileReady = true;
+
+      });
     },
     //Download file
     downloadFile(){
-      if (!this.getUrl) return;
-
-      const url = this.getUrl
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `screen-recording-${new Date().toISOString()}.webm`;
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 100);
+      if (!this.fileBlob) {
+        return;
+      }
+      RecordRTC.invokeSaveAsDialog(this.fileBlob, 'rec.webm')
     }
   },
 });
