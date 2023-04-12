@@ -1,6 +1,6 @@
 <template>
-  <RecordComponent v-if="mainStore.sourceSelected"/>
-  <PlayerComponent v-else-if="mainStore.fileReady"/>
+  <RecordComponent v-if="mainStore.isSourceSelected"/>
+  <PlayerComponent v-else-if="mainStore.isFileReady"/>
   <HomeComponent v-else/>
 </template>
 

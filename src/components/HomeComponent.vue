@@ -1,10 +1,6 @@
 <template>
   <div class="main-container">
-    <img 
-      src="/HatchfulExport-All/logo_transparent.png"
-      alt="Your Logo"
-      class="logo animation-logo" 
-    />
+    <font-awesome-icon size="10x" class="mb-5" icon="fa-compact-disc" spin color="#e2515f" />
     <v-btn 
       prepend-icon="mdi-record-circle"
       size="x-large" 

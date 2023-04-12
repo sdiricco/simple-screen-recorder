@@ -4,24 +4,26 @@ import _ from "lodash"
 
 interface Store {
   stream: MediaStream | null;
-  sourceSelected: boolean;
+  isSourceSelected: boolean;
   recorder: RecordRTC | null;
-  gifRecorder: RecordRTC.GifRecorder | null;
+  gifRecorder: any;
   gifUrl: string | null;
   fileBlob: Blob | null;
-  fileReady: boolean,
+  isFileReady: boolean,
 
 }
 
 export const useMainStore = defineStore("main", {
   state: () => <Store> ({ 
     stream: null,
-    sourceSelected: false,
+    isSourceSelected: false,
+
     recorder: null,
     gifRecorder: null,
+
     gifUrl: null,
     fileBlob: null,
-    fileReady: false,
+    isFileReady: false,
   }),
   getters: {
     getStream: (state) => state.stream,
@@ -33,13 +35,22 @@ export const useMainStore = defineStore("main", {
     }
   },
   actions: {
+    //Check browser compatibility 
+    checkBrowserCompatibility(){
+      if (!("mediaDevices" in navigator) || !("getDisplayMedia" in navigator.mediaDevices)) {
+        alert("La funzionalità di registrazione dello schermo non è supportata in questo browser.");
+      }
+    },
     //Choose screen source.
     //Open a standard web window and return the source selected by user
     async chooseScreenSource(){
       try {
+        if (this.stream) {
+          console.error("Source already selected!")
+          return;
+        }
         this.stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-        console.log(this.stream.id)
-        this.sourceSelected = true;
+        this.isSourceSelected = true;
       } catch (error:any) {
         console.log(error.message);
       }
@@ -47,55 +58,59 @@ export const useMainStore = defineStore("main", {
     //Stop sharing all tracks
     stopSharingAllTracks(){
       if (!this.stream) {
-        return;
+        return
       }
       const tracks = this.stream.getTracks();
       tracks.forEach((track:any) => track.stop());
-      this.sourceSelected = false;
+      this.isSourceSelected = false;
       this.stream = null;
     },
-    //Check browser compatibility 
-    checkBrowserCompatibility(){
-      if (!("mediaDevices" in navigator) || !("getDisplayMedia" in navigator.mediaDevices)) {
-        alert("La funzionalità di registrazione dello schermo non è supportata in questo browser.");
-      }
-    },
-    //Start recording
-    startRecordingScreen(){
+    //Start webm recorder
+    startWebmRecorder(){
       if (!this.stream) {
         return
       }
-      // this.recorder = new RecordRTC(this.stream, { type: "video" });
-      this.gifRecorder = new RecordRTC.GifRecorder(this.stream, { width: 1920, height: 1080, frameRate: 200, quality: 100 })
-      // this.recorder.startRecording();
-      this.gifRecorder.record();
-      this.fileReady = false;
+      this.recorder = new RecordRTC(this.stream, { type: "video" });
+      this.recorder.startRecording();
+      this.isFileReady = false;
     },
-    //Stop boh... 
-    async stopRecording(){
-      // if (!this.recorder) {
-      //   return;
-      // }
-      // const recorder = this.recorder;
-      // await new Promise((resolve) => recorder.stopRecording(()=> resolve(true)))
-      // this.fileBlob = this.recorder.getBlob();
-      // this.recorder.reset();
-      // this.recorder.destroy();
-      // this.recorder = null;
-      // this.stopSharingAllTracks();
-      // this.fileReady = true;
-
-
+    //Start gif recorder
+    startGifRecorder(){
+      if (!this.stream) {
+        return
+      }
+      this.gifRecorder = new RecordRTC.GifRecorder(this.stream, { width: 1920, height: 1080, frameRate: 200, quality: 100 })
+      this.gifRecorder.record();
+      this.isFileReady = false;
+    },
+    //Stop gif recorder
+    async stopGifRecorder(){
+      if (!this.gifRecorder) {
+        return
+      }
       const recorder = this.gifRecorder;
-      recorder.stop((blob)=> {
-        this.gifUrl = URL.createObjectURL(blob)
-        this.stopSharingAllTracks();
-        this.fileReady = true;
-
-      });
+      const blob = await new Promise<Blob>((resolve) => recorder.stop((blob: Blob)=> resolve(blob)))
+      this.gifUrl = URL.createObjectURL(blob);
+      this.isFileReady = true;
+      this.gifRecorder.clearRecordedData();
+      this.stopSharingAllTracks();
+    },
+    //Stop webm recorder
+    async stopWebmRecorder(){
+      if (!this.recorder) {
+        return;
+      }
+      const recorder = this.recorder;
+      await new Promise((resolve) => recorder.stopRecording(()=> resolve(true)))
+      this.fileBlob = this.recorder.getBlob();
+      this.recorder.reset();
+      this.recorder.destroy();
+      this.recorder = null;
+      this.stopSharingAllTracks();
+      this.isFileReady = true;
     },
     //Download file
-    downloadFile(){
+    downloadGif(){
       var link = document.createElement("a");
       link.href = this.gifUrl || "";
       link.download = "rec.gif";

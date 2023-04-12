@@ -3,9 +3,8 @@
     <v-main class="v-main-container">
       <router-view></router-view>
     </v-main>
-    <v-footer app class="text-center d-flex flex-column v-footer-container bg-transparent bordered" height="100px">
+    <v-footer app class="text-center d-flex justify-center   v-footer-container bg-transparent bordered" height="50px">
         <v-btn class="mx-4" icon="mdi-github" variant="text"></v-btn>
-        <v-divider></v-divider>
         <div>{{ new Date().getFullYear() }} — <strong>Simone Di Ricco</strong></div>
     </v-footer>
   </v-app>
@@ -29,7 +28,7 @@ html{
 <style scoped>
 
 .v-main-container{
-  height: calc(100vh - 100px);
+  height: calc(100vh - 50px);
 }
 .bordered{
   border-top: 2px solid #222;

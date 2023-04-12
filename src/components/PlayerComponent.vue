@@ -11,7 +11,7 @@
         size="x-large"
         rounded="pill"
         color="blue"
-        @click="mainStore.downloadFile"
+        @click="mainStore.downloadGif"
         >
           Scarica
       </v-btn>
@@ -47,7 +47,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 24px;
+  bottom: 64px;
 
 }
 .main-container {

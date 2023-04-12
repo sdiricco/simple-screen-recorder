@@ -12,7 +12,7 @@
       <v-btn 
         prepend-icon="mdi-stop-circle"
         size="x-large"
-        @click="mainStore.stopRecording"
+        @click="mainStore.stopGifRecorder"
         variant="outlined"
         rounded="pill"
         color="#e2515f">
@@ -30,7 +30,7 @@ const mainStore = useMainStore();
 const recordingPlayer = ref<any>(null);
 
 onMounted(async () => {
-  mainStore.startRecordingScreen();
+  mainStore.startGifRecorder();
   recordingPlayer.value.srcObject = mainStore.getStream
 });
 
