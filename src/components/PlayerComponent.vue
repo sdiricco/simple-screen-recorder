@@ -63,9 +63,6 @@ onUnmounted(() => {
 video {
   max-width: 100%;
   max-height: 100%;
-  margin: 16px;
-  border: 4px solid transparent;
-  border-radius: 8px;
 }
 
 

@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
 import RecordRTC from "recordrtc";
 import _ from "lodash"
+import { log } from 'node:console';
 
 interface Store {
   stream: MediaStream | null;
+  track: any;
   isSourceSelected: boolean;
   recorder: RecordRTC | null;
   gifRecorder: any;
@@ -17,6 +19,7 @@ export const useMainStore = defineStore("main", {
   state: () => <Store> ({ 
     stream: null,
     isSourceSelected: false,
+    track: null,
 
     recorder: null,
     gifRecorder: null,
@@ -46,10 +49,12 @@ export const useMainStore = defineStore("main", {
     async chooseScreenSource(){
       try {
         if (this.stream) {
-          console.error("Source already selected!")
           return;
         }
-        this.stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        const devices = await navigator.mediaDevices.enumerateDevices()
+        console.log(devices);
+        
+        this.stream = await navigator.mediaDevices.getDisplayMedia({ video: true })
         this.isSourceSelected = true;
       } catch (error:any) {
         console.log(error.message);
@@ -75,12 +80,13 @@ export const useMainStore = defineStore("main", {
       this.isFileReady = false;
     },
     //Start gif recorder
-    startGifRecorder(){
-      if (!this.stream) {
-        return
+    startGifRecorder(payload: {width:number, height:number}){
+      if (!this.stream || !payload.height || !payload.width) {
+        return;
       }
-      this.gifRecorder = new RecordRTC.GifRecorder(this.stream, { width: 1920, height: 1080, frameRate: 200, quality: 100 })
+      this.gifRecorder = new RecordRTC.GifRecorder(this.stream, { width: payload.width, height: payload.height, frameRate: 200, quality: 100 })
       this.gifRecorder.record();
+      console.log(`[Start recording window ${this.stream.id} with <GifRecorder>. Target resolution: ${payload.width}x${payload.height}]`);
       this.isFileReady = false;
     },
     //Stop gif recorder
