@@ -13,7 +13,8 @@ interface Store {
   fileBlob: Blob | null;
   isFileReady: boolean,
   recordingVideoOptions: Array<any>
-  recordingVideoOptionSelectedIdx: Number
+  recordingVideoOptionSelectedIdx: Number,
+  isAudioEnabled: Boolean 
 }
 
 export const useMainStore = defineStore("main", {
@@ -31,16 +32,15 @@ export const useMainStore = defineStore("main", {
 
     recordingVideoOptions: [
       {
-        type: 'only-screen'
+        type: 'screen'
       },
       {
-        type: 'screen-and-webcam'
-      },
-      {
-        type: 'only-webcam'
+        type: 'webcam'
       }
     ],
-    recordingVideoOptionSelectedIdx: 0
+    recordingVideoOptionSelectedIdx: 0,
+
+    isAudioEnabled: false,
   }),
   getters: {
     getStream: (state) => state.stream,
