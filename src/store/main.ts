@@ -12,7 +12,8 @@ interface Store {
   gifUrl: string | null;
   fileBlob: Blob | null;
   isFileReady: boolean,
-
+  recordingVideoOptions: Array<any>
+  recordingVideoOptionSelectedIdx: Number
 }
 
 export const useMainStore = defineStore("main", {
@@ -27,6 +28,19 @@ export const useMainStore = defineStore("main", {
     gifUrl: null,
     fileBlob: null,
     isFileReady: false,
+
+    recordingVideoOptions: [
+      {
+        type: 'only-screen'
+      },
+      {
+        type: 'screen-and-webcam'
+      },
+      {
+        type: 'only-webcam'
+      }
+    ],
+    recordingVideoOptionSelectedIdx: 0
   }),
   getters: {
     getStream: (state) => state.stream,

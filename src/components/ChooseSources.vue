@@ -1,45 +1,42 @@
 <template>
-  <div class="main-container">
-    <div class="text-h3">Choose source</div>
+  <div class="d-flex flex-column justify-center align-center h-100">
+    <div class="text-h3 mb-5">Cosa vuoi registrare ?</div>
+    <v-slide-group
+      v-model="mainStore.recordingVideoOptionSelectedIdx"
+      mandatory
+      class="mb-5"
+    >
+      <v-slide-group-item
+        v-for="opt in mainStore.recordingVideoOptions"
+        :key="opt.type"
+        v-slot="{ isSelected, toggle }"
+      >
+        <v-btn
+          class="ma-2"
+          size="x-large"
+          :color="isSelected ? 'primary' : undefined"
+          @click="toggle"
+        >
+          {{ opt.type }}
+        </v-btn>
+      </v-slide-group-item>
+    </v-slide-group>
+    <v-btn 
+      prepend-icon="mdi-record-circle"
+      size="x-large" 
+      rounded="pill" 
+      variant="outlined"
+      color="#e2515f"
+      @click="mainStore.chooseScreenSource"
+    >
+        Registra
+    </v-btn>
   </div>
 </template>
 
-
 <script setup lang="ts">
-import {useMainStore} from "@/store/main"
-const mainStore = useMainStore()
+import { useMainStore } from "@/store/main";
+const mainStore = useMainStore();
 </script>
 
-<style scoped>
-
-.main-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.animation-logo{
-  animation: keyframelogo 2s linear infinite
-}
-
-@keyframes keyframelogo {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-
-.logo {
-  width: 350px; /* Adatta la larghezza del logo secondo le tue esigenze */
-  height: auto; /* Mantiene le proporzioni corrette del logo */
-  margin: 16px 0; /* Aggiunge un margine sopra e sotto il logo */
-}
-</style>
+<style scoped></style>

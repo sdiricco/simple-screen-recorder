@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="d-flex flex-column justify-center align-center h-100">
     <font-awesome-icon size="10x" class="mb-5" icon="fa-compact-disc" spin color="#e2515f" />
     <v-btn 
       prepend-icon="mdi-record-circle"
@@ -7,7 +7,7 @@
       rounded="pill" 
       variant="outlined"
       color="#e2515f"
-      @click="mainStore.chooseScreenSource"
+      @click="emit('click-start-recording')"
     >
         Avvia adesso
     </v-btn>
@@ -16,18 +16,7 @@
 
 
 <script setup lang="ts">
-import {useMainStore} from "@/store/main"
-const mainStore = useMainStore()
+import {defineEmits} from "vue"
+const emit = defineEmits(['click-start-recording'])
 </script>
 
-<style scoped>
-
-.main-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-</style>
