@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="mx-auto my-auto">
     <video 
       ref="recordingPlayer"
       autoplay
@@ -48,15 +48,10 @@ onUnmounted(() => {
   justify-content: center;
   margin-bottom: 12px;
 }
-.main-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 video {
   max-height: 50vh;
+  border-radius: 16px;
+  border: 4px solid #222
 }
 
 .animation {

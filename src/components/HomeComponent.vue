@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column justify-center align-center h-100">
+  <div class="mx-auto my-auto d-flex flex-column">
     <font-awesome-icon size="10x" class="mb-5" icon="fa-compact-disc" spin color="#e2515f" />
     <v-btn 
       class="mt-5"

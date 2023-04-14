@@ -3,10 +3,10 @@
     <v-main app class="v-main-container">
       <router-view></router-view>
     </v-main>
-    <!-- <v-footer app class="text-center d-flex justify-center   v-footer-container bg-transparent bordered" height="50px">
-        <v-btn class="mx-4" icon="mdi-github" variant="text"></v-btn>
+    <v-footer app class="text-center d-flex justify-center   v-footer-container bg-transparent bordered" height="50px">
+        <v-btn class="mx-4" icon="mdi-github" variant="text" href="https://github.com/sdiricco/simple-screen-recorder"></v-btn>
         <div>{{ new Date().getFullYear() }} — <strong>Simone Di Ricco</strong></div>
-    </v-footer> -->
+    </v-footer>
   </v-app>
 </template>
 
@@ -29,6 +29,9 @@ html{
 
 .v-main-container{
   height: calc(100vh - 50px);
+  margin-bottom: 50px;
+  overflow-y: auto;
+  display: flex;
 }
 .bordered{
   border-top: 2px solid #222;
