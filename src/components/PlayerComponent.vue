@@ -35,12 +35,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import {useMainStore} from "@/store/main"
 import router from "@/router";
 const mainStore = useMainStore();
 const gif = ref<any>(null);
 const videoPlayer = ref<any>(null);
+
+
+
+
 
 onMounted(async () => {
   // gif.value.src = mainStore.gifUrl
