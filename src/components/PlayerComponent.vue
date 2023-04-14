@@ -14,7 +14,7 @@
       <v-btn 
         prepend-icon="mdi-download"
         class="mr-4"
-        size="x-large"
+        size="large"
         rounded="pill"
         color="blue"
         @click="mainStore.donwloadWebm"
@@ -23,7 +23,7 @@
       </v-btn>
       <v-btn 
         prepend-icon="mdi-record-circle"  
-        size="x-large" 
+        size="large" 
         @click="mainStore.$reset()" 
         variant="outlined"
         rounded="pill"

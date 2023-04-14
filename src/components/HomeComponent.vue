@@ -1,15 +1,15 @@
 <template>
   <div class="mx-auto my-auto d-flex flex-column">
-    <font-awesome-icon size="10x" class="mb-5" icon="fa-compact-disc" spin color="#e2515f" />
+    <font-awesome-icon size="8x" class="mb-5" icon="fa-compact-disc" spin color="#e2515f" />
     <div class="custom-font mb-5">Screen Recorder</div>
-      <div v-for="item in items" :key="item" class="text-h6 font-weight-thin">
+      <div v-for="item in items" :key="item" class="text-body-1 font-weight-thin">
         - {{ item }}
       </div>
     <div class="mx-auto mt-5">
       <v-btn
         class="mt-5"
         prepend-icon="mdi-record-circle"
-        size="x-large"
+        size="large"
         rounded="pill"
         variant="outlined"
         color="#e2515f"
@@ -25,7 +25,7 @@
 .custom-font {
   font-family: "Shadows Into Light", cursive;
   color: #e2515f;
-  font-size: 48px;
+  font-size: 42px;
 }
 </style>
 

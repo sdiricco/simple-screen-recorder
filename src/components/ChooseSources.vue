@@ -1,6 +1,6 @@
 <template>
-  <div class="my-auto mx-auto text-center">
-    <div class="text-h4 mb-5">Cosa vuoi registrare? </div>
+  <div class="my-auto mx-auto text-center pa-5">
+    <div class="text-h4 mb-4">Cosa vuoi registrare? </div>
     <div class="d-flex">
       <v-sheet
         v-for="(opt, index) in mainStore.recordingVideoOptions"
@@ -10,8 +10,8 @@
         :class="mainStore.recordingVideoOptionSelectedIdx === index ? 'sheet-active' : ''"
         class="sheet-content ma-1 d-flex align-center justify-center flex-column">
         <div class="d-flex">
-          <font-awesome-icon v-if="opt.type !== 'webcam'" size="3x" class="ma-4" icon="fa-display" />
-          <font-awesome-icon v-if="opt.type !== 'screen'" size="3x" class="ma-4" icon="fa-camera" />
+          <font-awesome-icon v-if="opt.type !== 'webcam'" size="2x" class="ma-4" icon="fa-display" />
+          <font-awesome-icon v-if="opt.type !== 'screen'" size="2x" class="ma-4" icon="fa-camera" />
         </div>
         <div class="text-h6">
           {{ translationObj[opt.type] }}
@@ -24,8 +24,8 @@
     </div>
     <div class="d-flex align-center justify-center flex-column mb-5">
       <div class="text-h5 mb-2">Microfono</div>
-      <v-btn v-if="mainStore.isAudioEnabled" icon="mdi-microphone" @click="mainStore.isAudioEnabled = false" size="x-large" color="blue"></v-btn>
-      <v-btn v-else icon="mdi-microphone-off" @click="mainStore.isAudioEnabled = true" size="x-large"></v-btn>
+      <v-btn v-if="mainStore.isAudioEnabled" icon="mdi-microphone" @click="mainStore.isAudioEnabled = false" size="large" color="blue"></v-btn>
+      <v-btn v-else icon="mdi-microphone-off" @click="mainStore.isAudioEnabled = true" size="large"></v-btn>
     </div>
 
     <!-- <div class="item-width my-5">
@@ -35,7 +35,7 @@
       <v-checkbox density="comfortable" hide-details label="Registra come GIF" color="blue"></v-checkbox>
     </div> -->
     <div class="item-width d-flex justify-center">
-      <v-btn prepend-icon="mdi-record-circle" class="margin-40px" size="x-large" rounded="pill" variant="outlined" color="#e2515f" @click="mainStore.requestPermissions()">
+      <v-btn prepend-icon="mdi-record-circle" class="margin-40px" size="large" rounded="pill" variant="outlined" color="#e2515f" @click="mainStore.requestPermissions()">
         Registra
       </v-btn>
     </div>
@@ -59,8 +59,8 @@ const translationObj = ref<any>({
 }
 .sheet-content {
   cursor: pointer;
-  height: 250px;
-  width: 250px;
+  height: 200px;
+  width: 200px;
   transform: scale(0.95);
 }
 
