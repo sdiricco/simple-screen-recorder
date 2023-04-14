@@ -1,16 +1,8 @@
 <template>
-  <RecordComponent v-if="mainStore.sourceSelected"/>
-  <PlayerComponent v-else-if="mainStore.fileReady"/>
-  <HomeComponent v-else/>
+  <HomeComponent @click-start-recording="router.push({name: 'record-page'})"/>
 </template>
 
 <script setup lang="ts">
 import HomeComponent from '@/components/HomeComponent.vue';
-import RecordComponent from '@/components/RecordComponent.vue';
-import PlayerComponent from '@/components/PlayerComponent.vue';
-import {useMainStore} from "@/store/main"
-const mainStore = useMainStore();
+import router from '@/router';
 </script>
-
-<style scoped>
-</style>

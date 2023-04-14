@@ -1,23 +1,46 @@
 import { defineStore } from 'pinia'
 import RecordRTC from "recordrtc";
 import _ from "lodash"
+import { log } from 'node:console';
 
 interface Store {
   stream: MediaStream | null;
-  sourceSelected: boolean;
+  track: any;
+  isSourceSelected: boolean;
   recorder: RecordRTC | null;
+  gifRecorder: any;
+  gifUrl: string | null;
   fileBlob: Blob | null;
-  fileReady: boolean,
-
+  isFileReady: boolean,
+  recordingVideoOptions: Array<any>
+  recordingVideoOptionSelectedIdx: number,
+  isAudioEnabled: boolean 
 }
 
 export const useMainStore = defineStore("main", {
   state: () => <Store> ({ 
     stream: null,
-    sourceSelected: false,
+    isSourceSelected: false,
+    track: null,
+
     recorder: null,
+    gifRecorder: null,
+
+    gifUrl: null,
     fileBlob: null,
-    fileReady: false,
+    isFileReady: false,
+
+    recordingVideoOptions: [
+      {
+        type: 'screen'
+      },
+      {
+        type: 'webcam'
+      }
+    ],
+    recordingVideoOptionSelectedIdx: 0,
+
+    isAudioEnabled: false,
   }),
   getters: {
     getStream: (state) => state.stream,
@@ -26,16 +49,39 @@ export const useMainStore = defineStore("main", {
         return;
       }
       return URL.createObjectURL(state.fileBlob);
-    }
+    },
+    getVideoOptionSelected: (state) => state.recordingVideoOptions[state.recordingVideoOptionSelectedIdx]
   },
   actions: {
-    //Choose screen source.
-    //Open a standard web window and return the source selected by user
-    async chooseScreenSource(){
+    //Check browser compatibility 
+    checkBrowserCompatibility(){
+      if (!("mediaDevices" in navigator) || !("getDisplayMedia" in navigator.mediaDevices)) {
+        alert("La funzionalità di registrazione dello schermo non è supportata in questo browser.");
+      }
+    },
+    //Request permission to client
+    async requestPermissions(){
       try {
-        this.stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-        console.log(this.stream.id)
-        this.sourceSelected = true;
+        if (this.stream) {
+          return;
+        }
+        const devices = await navigator.mediaDevices.enumerateDevices()
+        console.log(devices);
+        const tracks = [];
+        if (this.isAudioEnabled) {
+          const audioStream = await navigator.mediaDevices.getUserMedia({ audio:true })
+          tracks.push(...audioStream.getTracks());
+        }
+        if (this.getVideoOptionSelected.type === 'webcam') {
+          const webcamStream = await navigator.mediaDevices.getUserMedia({ video:true })
+          tracks.push(...webcamStream.getTracks());
+        }
+        if (this.getVideoOptionSelected.type === 'screen') {
+          const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true})
+          tracks.push(...screenStream.getTracks());
+        }
+        this.stream = new MediaStream(tracks);
+        this.isSourceSelected = true;
       } catch (error:any) {
         console.log(error.message);
       }
@@ -43,57 +89,72 @@ export const useMainStore = defineStore("main", {
     //Stop sharing all tracks
     stopSharingAllTracks(){
       if (!this.stream) {
-        return;
+        return
       }
       const tracks = this.stream.getTracks();
       tracks.forEach((track:any) => track.stop());
-      this.sourceSelected = false;
+      this.isSourceSelected = false;
       this.stream = null;
     },
-    //Check browser compatibility 
-    checkBrowserCompatibility(){
-      if (!("mediaDevices" in navigator) || !("getDisplayMedia" in navigator.mediaDevices)) {
-        alert("La funzionalità di registrazione dello schermo non è supportata in questo browser.");
-      }
-    },
-    //Start recording
-    startRecordingScreen(){
+    //Start webm recorder
+    startWebmRecorder(){
       if (!this.stream) {
         return
       }
       this.recorder = new RecordRTC(this.stream, { type: "video" });
       this.recorder.startRecording();
-      this.fileReady = false;
+      this.isFileReady = false;
     },
-    //Stop recording
-    async stopRecording(){
+    //Start gif recorder
+    startGifRecorder(payload: {width:number, height:number}){
+      if (!this.stream || !payload.height || !payload.width) {
+        return;
+      }
+      this.gifRecorder = new RecordRTC.GifRecorder(this.stream, { width: payload.width, height: payload.height, frameRate: 200, quality: 100 })
+      this.gifRecorder.record();
+      console.log(`[Start recording window ${this.stream.id} with <GifRecorder>. Target resolution: ${payload.width}x${payload.height}]`);
+      this.isFileReady = false;
+    },
+    //Stop gif recorder
+    async stopGifRecorder(){
+      if (!this.gifRecorder) {
+        return
+      }
+      const recorder = this.gifRecorder;
+      const blob = await new Promise<Blob>((resolve) => recorder.stop((blob: Blob)=> resolve(blob)))
+      this.gifUrl = URL.createObjectURL(blob);
+      this.isFileReady = true;
+      this.gifRecorder.clearRecordedData();
+      this.stopSharingAllTracks();
+    },
+    //Stop webm recorder
+    async stopWebmRecorder(){
       if (!this.recorder) {
         return;
       }
       const recorder = this.recorder;
       await new Promise((resolve) => recorder.stopRecording(()=> resolve(true)))
-      this.fileBlob = this.recorder.getBlob()
+      this.fileBlob = this.recorder.getBlob();
       this.recorder.reset();
       this.recorder.destroy();
       this.recorder = null;
       this.stopSharingAllTracks();
-      this.fileReady = true;
+      this.isFileReady = true;
     },
     //Download file
-    downloadFile(){
-      if (!this.getUrl) return;
-
-      const url = this.getUrl
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `screen-recording-${new Date().toISOString()}.webm`;
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 100);
+    downloadGif(){
+      var link = document.createElement("a");
+      link.href = this.gifUrl || "";
+      link.download = "rec.gif";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    donwloadWebm(){
+      if(!this.fileBlob){
+        return
+      }
+      RecordRTC.invokeSaveAsDialog(this.fileBlob)
     }
   },
 });
