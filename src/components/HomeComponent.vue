@@ -1,10 +1,11 @@
 <template>
   <div class="mx-auto my-auto d-flex flex-column">
     <font-awesome-icon size="10x" class="mb-5" icon="fa-compact-disc" spin color="#e2515f" />
-    <div class="custom-font">
+    <div class="custom-font mb-5">
       Screen Recorder
     </div>
-    <v-btn 
+    <div class="mx-auto mt-5">
+      <v-btn 
       class="mt-5"
       prepend-icon="mdi-record-circle"
       size="x-large" 
@@ -15,6 +16,8 @@
     >
         Avvia adesso
     </v-btn>
+    </div>
+
   </div>
 </template>
 
