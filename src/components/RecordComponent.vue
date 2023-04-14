@@ -41,7 +41,11 @@ onUnmounted(() => {
 });
 </script>
 
+
 <style scoped>
+
+
+
 .controls {
   display: flex;
   align-items: center;
