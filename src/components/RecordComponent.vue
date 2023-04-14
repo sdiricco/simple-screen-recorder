@@ -6,6 +6,9 @@
       muted
       class="animation">
     </video>
+    <div class="text-h6 text-center">
+      {{ formattedTime }}
+    </div>
     <div 
       class="controls mt-4">
 
@@ -24,10 +27,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from "vue";
+import { ref, onMounted, onUnmounted, nextTick, computed } from "vue";
 import {useMainStore} from "@/store/main"
+import { useIntervalFn } from '@vueuse/core'
+
 const mainStore = useMainStore();
 const recordingPlayer = ref<any>(null);
+
+const time = ref(0)
+const { pause, resume } = useIntervalFn(() => {
+  time.value++
+}, 1000)
+
+const hours = computed(() => Math.floor(time.value / 3600))
+const minutes = computed(() => Math.floor((time.value % 3600) / 60))
+const seconds = computed(() => time.value % 60)
+
+const formattedTime = computed(() => {
+    const padZero = (num:number) => num.toString().padStart(2, '0')
+    return `${padZero(hours.value)}:${padZero(minutes.value)}:${padZero(seconds.value)}`
+  })
 
 onMounted(async () => {
   recordingPlayer.value.srcObject = mainStore.getStream

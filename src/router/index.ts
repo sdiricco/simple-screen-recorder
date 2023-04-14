@@ -19,6 +19,10 @@ const router = createRouter({
       path: '/record',
       name: 'record-page',
       component: getRecordPage,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/home'
     }
   ]
 })
