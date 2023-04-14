@@ -1,11 +1,10 @@
 <template>
   <v-app class="v-app-container">
-    <v-main class="v-main-container">
+    <v-main app class="v-main-container">
       <router-view></router-view>
     </v-main>
-    <v-footer app class="text-center d-flex flex-column v-footer-container bg-transparent bordered">
-        <v-btn class="mx-4" icon="mdi-github" variant="text"></v-btn>
-        <v-divider></v-divider>
+    <v-footer app class="text-center d-flex justify-center   v-footer-container bg-transparent bordered" height="50px">
+        <v-btn class="mx-4" icon="mdi-github" variant="text" href="https://github.com/sdiricco/simple-screen-recorder"></v-btn>
         <div>{{ new Date().getFullYear() }} — <strong>Simone Di Ricco</strong></div>
     </v-footer>
   </v-app>
@@ -20,7 +19,23 @@ onMounted(() => {
 })
 </script>
 
+
+
+
+<style>
+html{
+  overflow-y: auto !important;
+}
+</style>
+
 <style scoped>
+
+.v-main-container{
+  height: calc(100vh - 50px);
+  margin-bottom: 50px;
+  overflow-y: auto;
+  display: flex;
+}
 .bordered{
   border-top: 2px solid #222;
 }

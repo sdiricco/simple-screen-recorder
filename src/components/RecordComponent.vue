@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="mx-auto my-auto">
     <video 
       ref="recordingPlayer"
       autoplay
@@ -12,7 +12,7 @@
       <v-btn 
         prepend-icon="mdi-stop-circle"
         size="x-large"
-        @click="mainStore.stopRecording"
+        @click="mainStore.stopWebmRecorder"
         variant="outlined"
         rounded="pill"
         color="#e2515f">
@@ -24,40 +24,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import {useMainStore} from "@/store/main"
 const mainStore = useMainStore();
 const recordingPlayer = ref<any>(null);
 
 onMounted(async () => {
-  mainStore.startRecordingScreen();
   recordingPlayer.value.srcObject = mainStore.getStream
+  recordingPlayer.value.onloadedmetadata = () => {
+    // mainStore.startGifRecorder({width: recordingPlayer.value.videoWidth, height: recordingPlayer.value.videoHeight});  
+  }
+  mainStore.startWebmRecorder();
 });
 
 onUnmounted(() => {
 });
 </script>
 
+
 <style scoped>
+
+
+
 .controls {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
 }
-.main-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 video {
-  max-width: 100%;
   max-height: 50vh;
-  margin: 8px;
-  border: 4px solid transparent;
-  border-radius: 8px;
+  border-radius: 16px;
+  border: 4px solid #222
 }
 
 .animation {

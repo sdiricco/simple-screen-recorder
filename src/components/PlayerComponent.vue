@@ -1,10 +1,13 @@
 <template>
-  <div class="main-container">
+  <div class="mx-auto my-auto">
     <video 
       ref="videoPlayer"
       autoplay
-      controls>
+      controls
+    >
     </video>
+      <!-- <img ref="gif" src="" class="gif-class" download/> -->
+
     <div 
       class="controls mt-4">
 
@@ -14,14 +17,14 @@
         size="x-large"
         rounded="pill"
         color="blue"
-        @click="mainStore.downloadFile"
+        @click="mainStore.donwloadWebm"
         >
           Scarica
       </v-btn>
       <v-btn 
         prepend-icon="mdi-record-circle"  
         size="x-large" 
-        @click="mainStore.chooseScreenSource" 
+        @click="mainStore.$reset()" 
         variant="outlined"
         rounded="pill"
         color="#e2515f">
@@ -34,14 +37,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 import {useMainStore} from "@/store/main"
+import router from "@/router";
 const mainStore = useMainStore();
+const gif = ref<any>(null);
 const videoPlayer = ref<any>(null);
 
 onMounted(async () => {
+  // gif.value.src = mainStore.gifUrl
   videoPlayer.value.src = mainStore.getUrl
-});
-
-onUnmounted(() => {
 });
 </script>
 
@@ -50,22 +53,20 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
-}
-.main-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+
 }
 video {
-  max-width: 100%;
   max-height: 50vh;
-  margin: 8px;
-  border: 4px solid transparent;
-  border-radius: 8px;
+  border-radius: 16px;
 }
 
+
+.gif-container{
+  
+}
+.gif-class{
+  max-height: calc(100vh - 100px);
+
+}
 
 </style>
