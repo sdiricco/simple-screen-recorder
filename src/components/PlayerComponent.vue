@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="mx-auto my-auto">
     <video 
       ref="videoPlayer"
       autoplay
@@ -53,23 +53,11 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  bottom: 64px;
 
 }
-.main-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow-y:auto;
-  overflow-x: hidden;
-  position: relative;
-}
 video {
-  max-width: 100%;
-  max-height: 100%;
+  max-height: 50vh;
+  border-radius: 16px;
 }
 
 

@@ -1,24 +1,24 @@
 <template>
-  <div class="d-flex flex-column my-5 pa-5 align-center">
+  <div class="my-auto mx-auto text-center">
     <div class="text-h4 mb-5">Cosa vuoi registrare? </div>
-    <v-slide-group v-model="mainStore.recordingVideoOptionSelectedIdx" mandatory class="mb-5">
-      <v-slide-group-item v-for="opt in mainStore.recordingVideoOptions" :key="opt.type" v-slot="{ isSelected, toggle }">
-        <v-sheet
-          border
-          rounded="xl"
-          @click="toggle"
-          :class="isSelected ? 'sheet-active' : ''"
-          class="sheet-content ma-1 d-flex align-center justify-center flex-column">
-          <div class="d-flex">
-            <font-awesome-icon v-if="opt.type !== 'webcam'" size="3x" class="ma-4" icon="fa-display" />
-            <font-awesome-icon v-if="opt.type !== 'screen'" size="3x" class="ma-4" icon="fa-camera" />
-          </div>
-          <div class="text-h6">
-            {{ translationObj[opt.type] }}
-          </div>
-        </v-sheet>
-      </v-slide-group-item>
-    </v-slide-group>
+    <div class="d-flex">
+      <v-sheet
+        v-for="(opt, index) in mainStore.recordingVideoOptions"
+        border
+        rounded="xl"
+        @click="mainStore.recordingVideoOptionSelectedIdx = index"
+        :class="mainStore.recordingVideoOptionSelectedIdx === index ? 'sheet-active' : ''"
+        class="sheet-content ma-1 d-flex align-center justify-center flex-column">
+        <div class="d-flex">
+          <font-awesome-icon v-if="opt.type !== 'webcam'" size="3x" class="ma-4" icon="fa-display" />
+          <font-awesome-icon v-if="opt.type !== 'screen'" size="3x" class="ma-4" icon="fa-camera" />
+        </div>
+        <div class="text-h6">
+          {{ translationObj[opt.type] }}
+        </div>
+      </v-sheet>
+    </div>
+
     <div class="item-width my-5">
       <v-divider class="mx-4"></v-divider>
     </div>
@@ -75,7 +75,6 @@ const translationObj = ref<any>({
 }
 
 .item-width{
-  width: 25%;
   min-width: 400px;
 }
 </style>
