@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import RecordRTC from "recordrtc";
 import _ from "lodash"
-import { log } from 'node:console';
 
 interface Store {
   stream: MediaStream | null;
@@ -14,7 +13,10 @@ interface Store {
   isFileReady: boolean,
   recordingVideoOptions: Array<any>
   recordingVideoOptionSelectedIdx: number,
-  isAudioEnabled: boolean 
+  isAudioEnabled: boolean,
+  recorderStarted: boolean,
+  recorderPaused: boolean,
+
 }
 
 export const useMainStore = defineStore("main", {
@@ -24,6 +26,10 @@ export const useMainStore = defineStore("main", {
     track: null,
 
     recorder: null,
+
+    recorderStarted: false,
+    recorderPaused: false,
+
     gifRecorder: null,
 
     gifUrl: null,
@@ -103,7 +109,25 @@ export const useMainStore = defineStore("main", {
       }
       this.recorder = new RecordRTC(this.stream, { type: "video" });
       this.recorder.startRecording();
+      this.recorderStarted = true;
       this.isFileReady = false;
+    },
+    //Pause webm recorder
+    pauseWebmRecorder(){
+      if (!this.recorder) {
+        return;
+      }
+      this.recorder.pauseRecording();
+      this.recorderPaused = true;
+    },
+    //Resume webm recorder
+    resumeWebmRecorder(){
+      if (!this.recorder) {
+        return;
+      }
+      this.recorder.resumeRecording();
+      this.recorderPaused = false;
+
     },
     //Start gif recorder
     startGifRecorder(payload: {width:number, height:number}){
@@ -115,6 +139,7 @@ export const useMainStore = defineStore("main", {
       console.log(`[Start recording window ${this.stream.id} with <GifRecorder>. Target resolution: ${payload.width}x${payload.height}]`);
       this.isFileReady = false;
     },
+
     //Stop gif recorder
     async stopGifRecorder(){
       if (!this.gifRecorder) {
@@ -140,6 +165,8 @@ export const useMainStore = defineStore("main", {
       this.recorder = null;
       this.stopSharingAllTracks();
       this.isFileReady = true;
+      this.recorderStarted = false;
+      this.recorderPaused = false;
     },
     //Download file
     downloadGif(){

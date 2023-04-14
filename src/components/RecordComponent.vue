@@ -4,13 +4,44 @@
       ref="recordingPlayer"
       autoplay
       muted
-      class="animation">
+      :class="{animation: !mainStore.recorderPaused}">
     </video>
     <div class="text-h6 text-center">
       {{ formattedTime }}
     </div>
     <div 
       class="controls mt-4">
+
+      <v-btn 
+        v-if="!mainStore.recorderPaused"
+        prepend-icon="mdi-pause-circle"
+        size="x-large"
+        @click="()=> {
+          mainStore.pauseWebmRecorder()
+          pause();
+        }"
+        class="mr-4"
+        variant="outlined"
+        rounded="pill"
+        color="yellow">
+        
+        Pausa
+      </v-btn>
+      <v-btn 
+        v-else-if="mainStore.recorderPaused"
+        prepend-icon="mdi-play-circle"
+        size="x-large"
+        @click="() => {
+          mainStore.resumeWebmRecorder()
+          resume();
+        }"
+        class="mr-4"
+        variant="outlined"
+        rounded="pill"
+        color="blue">
+        
+        Riprendi
+      </v-btn>
 
       <v-btn 
         prepend-icon="mdi-stop-circle"
@@ -20,7 +51,7 @@
         rounded="pill"
         color="#e2515f">
         
-        Interrompi
+        Ferma
       </v-btn>
     </div>
   </div>
