@@ -13,8 +13,8 @@ interface Store {
   fileBlob: Blob | null;
   isFileReady: boolean,
   recordingVideoOptions: Array<any>
-  recordingVideoOptionSelectedIdx: Number,
-  isAudioEnabled: Boolean 
+  recordingVideoOptionSelectedIdx: number,
+  isAudioEnabled: boolean 
 }
 
 export const useMainStore = defineStore("main", {
@@ -49,7 +49,8 @@ export const useMainStore = defineStore("main", {
         return;
       }
       return URL.createObjectURL(state.fileBlob);
-    }
+    },
+    getVideoOptionSelected: (state) => state.recordingVideoOptions[state.recordingVideoOptionSelectedIdx]
   },
   actions: {
     //Check browser compatibility 
@@ -58,17 +59,28 @@ export const useMainStore = defineStore("main", {
         alert("La funzionalità di registrazione dello schermo non è supportata in questo browser.");
       }
     },
-    //Choose screen source.
-    //Open a standard web window and return the source selected by user
-    async chooseScreenSource(){
+    //Request permission to client
+    async requestPermissions(){
       try {
         if (this.stream) {
           return;
         }
         const devices = await navigator.mediaDevices.enumerateDevices()
         console.log(devices);
-        
-        this.stream = await navigator.mediaDevices.getDisplayMedia({ video: true })
+        const tracks = [];
+        if (this.isAudioEnabled) {
+          const audioStream = await navigator.mediaDevices.getUserMedia({ audio:true })
+          tracks.push(...audioStream.getTracks());
+        }
+        if (this.getVideoOptionSelected.type === 'webcam') {
+          const webcamStream = await navigator.mediaDevices.getUserMedia({ video:true })
+          tracks.push(...webcamStream.getTracks());
+        }
+        if (this.getVideoOptionSelected.type === 'screen') {
+          const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true})
+          tracks.push(...screenStream.getTracks());
+        }
+        this.stream = new MediaStream(tracks);
         this.isSourceSelected = true;
       } catch (error:any) {
         console.log(error.message);
@@ -137,6 +149,12 @@ export const useMainStore = defineStore("main", {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    },
+    donwloadWebm(){
+      if(!this.fileBlob){
+        return
+      }
+      RecordRTC.invokeSaveAsDialog(this.fileBlob)
     }
   },
 });

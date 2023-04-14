@@ -1,6 +1,12 @@
 <template>
   <div class="main-container">
-      <img ref="gif" src="" class="gif-class" download/>
+    <video 
+      ref="videoPlayer"
+      autoplay
+      controls
+    >
+    </video>
+      <!-- <img ref="gif" src="" class="gif-class" download/> -->
 
     <div 
       class="controls mt-4">
@@ -11,14 +17,14 @@
         size="x-large"
         rounded="pill"
         color="blue"
-        @click="mainStore.downloadGif"
+        @click="mainStore.donwloadWebm"
         >
           Scarica
       </v-btn>
       <v-btn 
         prepend-icon="mdi-record-circle"  
         size="x-large" 
-        @click="mainStore.chooseScreenSource" 
+        @click="mainStore.$reset()" 
         variant="outlined"
         rounded="pill"
         color="#e2515f">
@@ -31,13 +37,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 import {useMainStore} from "@/store/main"
+import router from "@/router";
 const mainStore = useMainStore();
 const gif = ref<any>(null);
+const videoPlayer = ref<any>(null);
 
 onMounted(async () => {
-  gif.value.src = mainStore.gifUrl
-});
-onUnmounted(() => {
+  // gif.value.src = mainStore.gifUrl
+  videoPlayer.value.src = mainStore.getUrl
 });
 </script>
 

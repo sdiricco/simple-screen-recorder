@@ -12,7 +12,7 @@
       <v-btn 
         prepend-icon="mdi-stop-circle"
         size="x-large"
-        @click="mainStore.stopGifRecorder"
+        @click="mainStore.stopWebmRecorder"
         variant="outlined"
         rounded="pill"
         color="#e2515f">
@@ -32,8 +32,9 @@ const recordingPlayer = ref<any>(null);
 onMounted(async () => {
   recordingPlayer.value.srcObject = mainStore.getStream
   recordingPlayer.value.onloadedmetadata = () => {
-    mainStore.startGifRecorder({width: recordingPlayer.value.videoWidth, height: recordingPlayer.value.videoHeight});  
+    // mainStore.startGifRecorder({width: recordingPlayer.value.videoWidth, height: recordingPlayer.value.videoHeight});  
   }
+  mainStore.startWebmRecorder();
 });
 
 onUnmounted(() => {
@@ -55,7 +56,7 @@ onUnmounted(() => {
   justify-content: center;
 }
 video {
-
+  max-height: 50vh;
 }
 
 .animation {

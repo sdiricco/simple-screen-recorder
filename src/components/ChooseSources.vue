@@ -22,20 +22,20 @@
     <div class="item-width my-5">
       <v-divider class="mx-4"></v-divider>
     </div>
-    <div class="d-flex align-center justify-center flex-column">
+    <div class="d-flex align-center justify-center flex-column mb-5">
       <div class="text-h5 mb-2">Microfono</div>
       <v-btn v-if="mainStore.isAudioEnabled" icon="mdi-microphone" @click="mainStore.isAudioEnabled = false" size="x-large" color="blue"></v-btn>
       <v-btn v-else icon="mdi-microphone-off" @click="mainStore.isAudioEnabled = true" size="x-large"></v-btn>
     </div>
 
-    <div class="item-width my-5">
+    <!-- <div class="item-width my-5">
       <v-divider class="mx-4"></v-divider>
-    </div>
-    <div class="mb-5">
+    </div> -->
+    <!-- <div class="mb-5">
       <v-checkbox density="comfortable" hide-details label="Registra come GIF" color="blue"></v-checkbox>
-    </div>
-    <div class="item-width d-flex justify-center">
-      <v-btn prepend-icon="mdi-record-circle" block size="x-large" rounded="pill" variant="outlined" color="#e2515f" @click="mainStore.chooseScreenSource">
+    </div> -->
+    <div class="item-width d-flex justify-center mt-5">
+      <v-btn prepend-icon="mdi-record-circle" size="x-large" rounded="pill" variant="outlined" color="#e2515f" @click="mainStore.requestPermissions()">
         Registra
       </v-btn>
     </div>

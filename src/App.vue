@@ -1,12 +1,12 @@
 <template>
   <v-app class="v-app-container">
-    <v-main class="v-main-container">
+    <v-main app class="v-main-container">
       <router-view></router-view>
     </v-main>
-    <v-footer app class="text-center d-flex justify-center   v-footer-container bg-transparent bordered" height="50px">
+    <!-- <v-footer app class="text-center d-flex justify-center   v-footer-container bg-transparent bordered" height="50px">
         <v-btn class="mx-4" icon="mdi-github" variant="text"></v-btn>
         <div>{{ new Date().getFullYear() }} — <strong>Simone Di Ricco</strong></div>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
@@ -21,7 +21,7 @@ onMounted(() => {
 
 <style>
 html{
-  overflow-y: hidden !important;
+  overflow-y: auto !important;
 }
 </style>
 
