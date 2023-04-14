@@ -34,8 +34,8 @@
     <!-- <div class="mb-5">
       <v-checkbox density="comfortable" hide-details label="Registra come GIF" color="blue"></v-checkbox>
     </div> -->
-    <div class="item-width d-flex justify-center mt-5">
-      <v-btn prepend-icon="mdi-record-circle" size="x-large" rounded="pill" variant="outlined" color="#e2515f" @click="mainStore.requestPermissions()">
+    <div class="item-width d-flex justify-center">
+      <v-btn prepend-icon="mdi-record-circle" class="margin-40px" size="x-large" rounded="pill" variant="outlined" color="#e2515f" @click="mainStore.requestPermissions()">
         Registra
       </v-btn>
     </div>
@@ -53,6 +53,10 @@ const translationObj = ref<any>({
 </script>
 
 <style scoped>
+
+.margin-40px{
+  margin-top: 40px;
+}
 .sheet-content {
   cursor: pointer;
   height: 250px;
