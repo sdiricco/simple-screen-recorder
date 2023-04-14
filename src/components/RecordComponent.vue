@@ -15,7 +15,7 @@
       <v-btn 
         v-if="!mainStore.recorderPaused"
         prepend-icon="mdi-pause-circle"
-        size="x-large"
+        size="large"
         @click="()=> {
           mainStore.pauseWebmRecorder()
           pause();
@@ -30,7 +30,7 @@
       <v-btn 
         v-else-if="mainStore.recorderPaused"
         prepend-icon="mdi-play-circle"
-        size="x-large"
+        size="large"
         @click="() => {
           mainStore.resumeWebmRecorder()
           resume();
@@ -45,7 +45,7 @@
 
       <v-btn 
         prepend-icon="mdi-stop-circle"
-        size="x-large"
+        size="large"
         @click="mainStore.stopWebmRecorder"
         variant="outlined"
         rounded="pill"
