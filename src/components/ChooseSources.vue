@@ -8,7 +8,7 @@
         rounded="xl"
         @click="mainStore.recordingVideoOptionSelectedIdx = index"
         :class="mainStore.recordingVideoOptionSelectedIdx === index ? 'sheet-active' : ''"
-        class="sheet-content ma-1 d-flex align-center justify-center flex-column">
+        class="sheet-content ma-2 d-flex align-center justify-center flex-column">
         <div class="d-flex">
           <font-awesome-icon v-if="opt.type !== 'webcam'" size="2x" class="ma-4" icon="fa-display" />
           <font-awesome-icon v-if="opt.type !== 'screen'" size="2x" class="ma-4" icon="fa-camera" />
@@ -61,17 +61,15 @@ const translationObj = ref<any>({
   cursor: pointer;
   height: 200px;
   width: 200px;
-  transform: scale(0.95);
 }
 
 .sheet-content:hover {
   transition: transform 0.4s ease;
-  transform: scale(1);
+  transform: scale(1.05);
 }
 
 .sheet-content:not(:hover) {
   transition: transform 0.4s ease;
-  transform: scale(0.95);
 }
 
 .sheet-active {
