@@ -17,14 +17,14 @@
         size="large"
         rounded="pill"
         color="blue"
-        @click="mainStore.donwloadWebm"
+        @click="videoRecorder.donwload"
         >
           Scarica
       </v-btn>
       <v-btn 
         prepend-icon="mdi-record-circle"  
         size="large" 
-        @click="mainStore.$reset()" 
+        @click="emit('go-back')" 
         variant="outlined"
         rounded="pill"
         color="#e2515f">
@@ -37,10 +37,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import {useMainStore} from "@/store/main"
+import { useVideoRecorder } from "@/store/videoRecorder";
 import router from "@/router";
 const mainStore = useMainStore();
+const videoRecorder = useVideoRecorder();
 const gif = ref<any>(null);
 const videoPlayer = ref<any>(null);
+
+const emit = defineEmits(["go-back"]);
 
 
 
@@ -48,7 +52,7 @@ const videoPlayer = ref<any>(null);
 
 onMounted(async () => {
   // gif.value.src = mainStore.gifUrl
-  videoPlayer.value.src = mainStore.getUrl
+  videoPlayer.value.src = videoRecorder.getVideoUrl
 });
 </script>
 

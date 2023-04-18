@@ -13,8 +13,8 @@
         rounded="pill"
         variant="outlined"
         color="#e2515f"
-        @click="emit('click-start-recording')">
-        Avvia adesso
+        @click="emit('click-proceed')">
+        Continua
       </v-btn>
     </div>
   </div>
@@ -32,6 +32,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const emit = defineEmits(["click-start-recording"]);
+const emit = defineEmits(["click-proceed"]);
 const items = ref(["Completamente open source", "Registra lo schermo del tuo dispositivo", "Registra l’audio del tuo dispositivo", "Registra la webcam del tuo dispositivo"]);
 </script>

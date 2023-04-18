@@ -17,7 +17,7 @@
         prepend-icon="mdi-pause-circle"
         size="large"
         @click="()=> {
-          mainStore.pauseWebmRecorder()
+          videoRecorder.pause()
           pause();
         }"
         class="mr-4"
@@ -32,7 +32,7 @@
         prepend-icon="mdi-play-circle"
         size="large"
         @click="() => {
-          mainStore.resumeWebmRecorder()
+          videoRecorder.resume()
           resume();
         }"
         class="mr-4"
@@ -46,7 +46,10 @@
       <v-btn 
         prepend-icon="mdi-stop-circle"
         size="large"
-        @click="mainStore.stopWebmRecorder"
+        @click="async () => {
+          await videoRecorder.stop()
+          emit('recording-completed')
+        }"
         variant="outlined"
         rounded="pill"
         color="#e2515f">
@@ -60,10 +63,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick, computed } from "vue";
 import {useMainStore} from "@/store/main"
+import {useVideoRecorder} from "@/store/videoRecorder"
 import { useIntervalFn } from '@vueuse/core'
 
+const videoRecorder = useVideoRecorder();
 const mainStore = useMainStore();
 const recordingPlayer = ref<any>(null);
+
+const emit = defineEmits(["recording-completed"]);
 
 const time = ref(0)
 const { pause, resume } = useIntervalFn(() => {
@@ -80,11 +87,11 @@ const formattedTime = computed(() => {
   })
 
 onMounted(async () => {
-  recordingPlayer.value.srcObject = mainStore.getStream
+  recordingPlayer.value.srcObject = mainStore.stream
   recordingPlayer.value.onloadedmetadata = () => {
     // mainStore.startGifRecorder({width: recordingPlayer.value.videoWidth, height: recordingPlayer.value.videoHeight});  
   }
-  mainStore.startWebmRecorder();
+  videoRecorder.start();
 });
 
 onUnmounted(() => {

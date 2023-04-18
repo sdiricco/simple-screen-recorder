@@ -27,15 +27,8 @@
       <v-btn v-if="mainStore.isAudioEnabled" icon="mdi-microphone" @click="mainStore.isAudioEnabled = false" size="large" color="blue"></v-btn>
       <v-btn v-else icon="mdi-microphone-off" @click="mainStore.isAudioEnabled = true" size="large"></v-btn>
     </div>
-
-    <!-- <div class="item-width my-5">
-      <v-divider class="mx-4"></v-divider>
-    </div> -->
-    <!-- <div class="mb-5">
-      <v-checkbox density="comfortable" hide-details label="Registra come GIF" color="blue"></v-checkbox>
-    </div> -->
     <div class="item-width d-flex justify-center">
-      <v-btn prepend-icon="mdi-record-circle" class="margin-40px" size="large" rounded="pill" variant="outlined" color="#e2515f" @click="mainStore.requestPermissions()">
+      <v-btn prepend-icon="mdi-record-circle" class="margin-40px" size="large" rounded="pill" variant="outlined" color="#e2515f" @click="emit('click-start-recording')">
         Registra
       </v-btn>
     </div>
@@ -43,13 +36,15 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from "@/store/main";
+import {useMainStore} from "@/store/main"
 import { ref } from "vue";
 const mainStore = useMainStore();
 const translationObj = ref<any>({
   "screen": "Schermo",
   "webcam": "Webcam",
 });
+const emit = defineEmits(["click-start-recording"]);
+
 </script>
 
 <style scoped>

@@ -6,7 +6,7 @@ interface Store {
   recorder: any
 }
 
-export const useMainStore = defineStore("main", {
+export const useGifRecorderStore = defineStore("gif-recorder", {
   state: () =>
     <Store>{
       recorder: null,
@@ -24,6 +24,18 @@ export const useMainStore = defineStore("main", {
       this.recorder.record();
       console.log(`[Start recording window ${this.stream.id} with <GifRecorder>. Target resolution: ${payload.width}x${payload.height}]`);
       this.recorder = false;
+    },
+    //Stop
+    async stop(){
+      if (!this.recorder) {
+        return
+      }
+      const recorder = this.recorder;
+      const blob = await new Promise<Blob>((resolve) => recorder.stop((blob: Blob)=> resolve(blob)))
+      this.gifUrl = URL.createObjectURL(blob);
+      this.isFileReady = true;
+      this.recorder.clearRecordedData();
+      this.stopSharingAllTracks();
     },
 
     //Download file

@@ -1,5 +1,5 @@
 <template>
-  <HomeComponent @click-start-recording="router.push({name: 'record-page'})"/>
+  <HomeComponent @click-proceed="router.push({name: 'choose-sources-page'})"/>
 </template>
 
 <script setup lang="ts">
