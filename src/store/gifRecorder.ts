@@ -1,29 +1,35 @@
 import { defineStore } from "pinia";
 import RecordRTC from "recordrtc";
 import _ from "lodash";
+import {useMainStore} from "@/store/main"
+
 
 interface Store {
-  recorder: any
+  recorder: any,
+  gifUrl: any,
 }
 
-export const useGifRecorderStore = defineStore("gif-recorder", {
+export const useGifRecorder = defineStore("gif-recorder", {
   state: () =>
     <Store>{
       recorder: null,
+      gifUrl: null
     },
   getters: {
-    stream: (state:any) => null,
+    getStream: () => {
+      const mainStore = useMainStore();
+      return mainStore.stream
+    },
   },
   actions: {
     //Start gif recorder
     start(payload: { width: number; height: number }) {
-      if (!this.stream || !payload.height || !payload.width) {
+      if (!this.getStream || !payload.height || !payload.width) {
         return;
       }
-      this.recorder = new RecordRTC.GifRecorder(this.stream, { width: payload.width, height: payload.height, frameRate: 200, quality: 100 });
+      this.recorder = new RecordRTC.GifRecorder(this.getStream, { width: payload.width, height: payload.height, frameRate: 200, quality: 100 });
       this.recorder.record();
-      console.log(`[Start recording window ${this.stream.id} with <GifRecorder>. Target resolution: ${payload.width}x${payload.height}]`);
-      this.recorder = false;
+      console.log(`[Start recording window ${this.getStream.id} with <GifRecorder>. Target resolution: ${payload.width}x${payload.height}]`);
     },
     //Stop
     async stop(){
@@ -33,9 +39,7 @@ export const useGifRecorderStore = defineStore("gif-recorder", {
       const recorder = this.recorder;
       const blob = await new Promise<Blob>((resolve) => recorder.stop((blob: Blob)=> resolve(blob)))
       this.gifUrl = URL.createObjectURL(blob);
-      this.isFileReady = true;
       this.recorder.clearRecordedData();
-      this.stopSharingAllTracks();
     },
 
     //Download file

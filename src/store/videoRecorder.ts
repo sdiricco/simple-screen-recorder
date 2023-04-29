@@ -40,7 +40,6 @@ export const useVideoRecorder = defineStore("video-recorder", {
     //Stop webm recorder
     async stop(){
       this.fileBlob = this.recorder && await videoRecorder.stopRec(this.recorder)
-
     },
     donwload(){
       this.fileBlob && videoRecorder.saveRec(this.fileBlob)

@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import _ from "lodash";
 import * as media from "@/utils/media"
+import { watch } from 'vue'
+
 interface Store {
   devices: any;
 
@@ -21,6 +23,7 @@ interface Store {
   isAudioEnabled: boolean;
   recorderStarted: boolean;
   recorderPaused: boolean;
+  recordAsGif: boolean;
 }
 
 export const useMainStore = defineStore("main", {
@@ -51,6 +54,8 @@ export const useMainStore = defineStore("main", {
       recordingVideoOptionSelectedIdx: 0,
 
       isAudioEnabled: false,
+
+      recordAsGif: false,
     },
   getters: {
     getVideoOptionSelected: (state) => state.recordingVideoOptions[state.recordingVideoOptionSelectedIdx],
@@ -133,3 +138,5 @@ export const useMainStore = defineStore("main", {
     }
   },
 });
+
+

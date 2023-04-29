@@ -1,12 +1,13 @@
 <template>
   <div class="mx-auto my-auto">
     <video 
+      v-if="!mainStore.recordAsGif"
       ref="videoPlayer"
       autoplay
       controls
     >
     </video>
-      <!-- <img ref="gif" src="" class="gif-class" download/> -->
+    <img v-else ref="gif" src="" class="gif-class" download/>
 
     <div 
       class="controls mt-4">
@@ -17,7 +18,7 @@
         size="large"
         rounded="pill"
         color="blue"
-        @click="videoRecorder.donwload"
+        @click="onClickDownload"
         >
           Scarica
       </v-btn>
@@ -38,21 +39,31 @@
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import {useMainStore} from "@/store/main"
 import { useVideoRecorder } from "@/store/videoRecorder";
-import router from "@/router";
+import {useGifRecorder} from "@/store/gifRecorder"
 const mainStore = useMainStore();
 const videoRecorder = useVideoRecorder();
+const gifRecorder = useGifRecorder();
 const gif = ref<any>(null);
 const videoPlayer = ref<any>(null);
 
 const emit = defineEmits(["go-back"]);
 
 
-
+function onClickDownload(){
+  if (mainStore.recordAsGif) {
+    gifRecorder.download()
+  }else{
+    videoRecorder.donwload();
+  }
+}
 
 
 onMounted(async () => {
-  // gif.value.src = mainStore.gifUrl
-  videoPlayer.value.src = videoRecorder.getVideoUrl
+  if (mainStore.recordAsGif) {
+    gif.value.src = gifRecorder.gifUrl
+  }else{
+    videoPlayer.value.src = videoRecorder.getVideoUrl
+  }
 });
 </script>
 
@@ -73,7 +84,9 @@ video {
   
 }
 .gif-class{
-  max-height: calc(100vh - 100px);
+  max-height: 50vh;
+
+  /* max-height: calc(100vh - 100px); */
 
 }
 
