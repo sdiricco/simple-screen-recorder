@@ -3,16 +3,14 @@
     <v-main app class="v-main-container">
       <router-view></router-view>
     </v-main>
-    <v-footer app class="text-center d-flex justify-center align-center  v-footer-container bg-transparent bordered" height="50px">
-        <v-btn class="mx-4" icon="mdi-github" variant="text" href="https://github.com/sdiricco/simple-screen-recorder"></v-btn>
-        <div>{{ new Date().getFullYear() }} — <strong>Simone Di Ricco, v0.0.1</strong></div>
-    </v-footer>
+    <FooterComponent/>
   </v-app>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useMainStore} from "@/store/main"
+import FooterComponent from './components/FooterComponent.vue';
 const mainStore = useMainStore()
 onMounted(() => {
   mainStore.checkBrowserCompatibility();

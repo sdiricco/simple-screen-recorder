@@ -53,6 +53,7 @@ import { useVideoRecorder } from "@/store/videoRecorder";
 import {useGifRecorder} from "@/store/gifRecorder"
 import { useIntervalFn } from "@vueuse/core";
 import { mapStores } from "pinia";
+import router from "@/router";
 
 const videoRecorder = useVideoRecorder();
 const gifRecorder = useGifRecorder();
@@ -96,6 +97,9 @@ async function onClickStop(){
 }
 
 onMounted(async () => {
+  if (!mainStore.stream) {
+    router.push('/choose-sources')
+  }
   recordingPlayer.value.srcObject = mainStore.stream;
   if (mainStore.recordAsGif) {
     recordingPlayer.value.onloadedmetadata = () => {
