@@ -6,6 +6,8 @@ L'app registra lo schermo in due modalità:
 
 Inizialmente apparirà una pagina di selezione della sorgente di input, webcam o schermo e il microfono. Sarà inoltre possibile scegliere se registrare come gif o come video.
 
+Meglio scrivere l'app utilizzando compoenenti che pagine
+
 
 ## Project setup
 

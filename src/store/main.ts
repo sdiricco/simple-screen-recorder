@@ -24,6 +24,7 @@ interface Store {
   recorderStarted: boolean;
   recorderPaused: boolean;
   recordAsGif: boolean;
+  step: "home" | "choose-source" | "record" | "player";
 }
 
 export const useMainStore = defineStore("main", {
@@ -56,6 +57,8 @@ export const useMainStore = defineStore("main", {
       isAudioEnabled: false,
 
       recordAsGif: false,
+
+      step: 'home'
     },
   getters: {
     getVideoOptionSelected: (state) => state.recordingVideoOptions[state.recordingVideoOptionSelectedIdx],

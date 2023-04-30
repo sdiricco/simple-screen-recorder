@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import {useMainStore} from "@/store/main"
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 const mainStore = useMainStore();
 const translationObj = ref<any>({
   "screen": "Schermo",
@@ -56,7 +56,6 @@ function onChangeSwitch(v:any){
     mainStore.isAudioEnabled = false;
   }
 }
-
 </script>
 
 <style scoped>

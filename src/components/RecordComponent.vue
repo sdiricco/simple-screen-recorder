@@ -52,8 +52,7 @@ import { useMainStore } from "@/store/main";
 import { useVideoRecorder } from "@/store/videoRecorder";
 import {useGifRecorder} from "@/store/gifRecorder"
 import { useIntervalFn } from "@vueuse/core";
-import { mapStores } from "pinia";
-import router from "@/router";
+import {formatTime} from "@/utils/timer"
 
 const videoRecorder = useVideoRecorder();
 const gifRecorder = useGifRecorder();
@@ -67,14 +66,7 @@ const timer = useIntervalFn(() => {
   time.value++;
 }, 1000);
 
-const hours = computed(() => Math.floor(time.value / 3600));
-const minutes = computed(() => Math.floor((time.value % 3600) / 60));
-const seconds = computed(() => time.value % 60);
-
-const formattedTime = computed(() => {
-  const padZero = (num: number) => num.toString().padStart(2, "0");
-  return `${padZero(hours.value)}:${padZero(minutes.value)}:${padZero(seconds.value)}`;
-});
+const formattedTime = computed(() => formatTime(time.value))
 
 function onClickPause(){
   timer.pause();
@@ -92,14 +84,10 @@ async function onClickStop(){
   }else {
     await videoRecorder.stop();
   }
-  mainStore.stopSharingAllTracks();
   emit('recording-completed');
 }
 
 onMounted(async () => {
-  if (!mainStore.stream) {
-    router.push('/choose-sources')
-  }
   recordingPlayer.value.srcObject = mainStore.stream;
   if (mainStore.recordAsGif) {
     recordingPlayer.value.onloadedmetadata = () => {
