@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import RecordRTC from "recordrtc";
 import _ from "lodash";
 import { useMainStore } from "@/store/main";
 import * as gifRecorder from "@/utils/gifRecorder";

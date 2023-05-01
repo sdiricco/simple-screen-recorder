@@ -21,6 +21,9 @@ onMounted(() => {
 
 
 <style>
+body{
+  zoom: 100%;
+}
 html{
   overflow-y: auto !important;
 }

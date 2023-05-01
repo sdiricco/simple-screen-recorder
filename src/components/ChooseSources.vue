@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import {useMainStore} from "@/store/main"
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 const mainStore = useMainStore();
 const translationObj = ref<any>({
   "screen": "Schermo",
