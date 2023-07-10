@@ -23,9 +23,6 @@
       <v-switch inset color="blue" label="Registra come Gif" @input="onChangeSwitch"></v-switch>
     </div>
 
-    <div class="item-width mb-5">
-      <v-divider class="mx-4"></v-divider>
-    </div>
     <div class="d-flex align-center justify-center flex-column mb-5">
       <div class="text-h5 mb-2">Microfono</div>
       <v-btn v-if="mainStore.isAudioEnabled" :disabled="mainStore.recordAsGif" icon="mdi-microphone" @click="mainStore.isAudioEnabled = false" size="large" color="blue"></v-btn>

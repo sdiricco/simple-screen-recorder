@@ -7,7 +7,7 @@
     <div class="controls mt-4">
 
       <!-- Pause button -->
-      <v-btn
+      <!-- <v-btn
         v-if="!mainStore.recorderPaused"
         prepend-icon="mdi-pause-circle"
         size="large"
@@ -17,10 +17,10 @@
         rounded="pill"
         color="yellow">
         Pausa
-      </v-btn>
+      </v-btn> -->
 
       <!-- Resume button -->
-      <v-btn
+      <!-- <v-btn
         v-else-if="mainStore.recorderPaused"
         prepend-icon="mdi-play-circle"
         size="large"
@@ -30,7 +30,7 @@
         rounded="pill"
         color="blue">
         Riprendi
-      </v-btn>
+      </v-btn> -->
 
       <!-- Stop button -->
       <v-btn
@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick, computed } from "vue";
+import { ref, onMounted, onUnmounted, nextTick, computed, watch } from "vue";
 import { useMainStore } from "@/store/main";
 import { useVideoRecorder } from "@/store/videoRecorder";
 import {useGifRecorder} from "@/store/gifRecorder"
@@ -67,6 +67,7 @@ const timer = useIntervalFn(() => {
 }, 1000);
 
 const formattedTime = computed(() => formatTime(time.value))
+const forceStopSharing = computed(()=> mainStore.forceStopSharing)
 
 function onClickPause(){
   timer.pause();
@@ -77,6 +78,10 @@ function onClickResume(){
   timer.resume();
 }
 
+watch(forceStopSharing, () => {
+  onClickStop();
+})
+
 
 async function onClickStop(){
   if (mainStore.recordAsGif) {
@@ -86,6 +91,8 @@ async function onClickStop(){
   }
   emit('recording-completed');
 }
+
+
 
 onMounted(async () => {
   recordingPlayer.value.srcObject = mainStore.stream;
