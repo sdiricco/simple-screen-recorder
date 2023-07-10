@@ -17,17 +17,16 @@ onMounted(() => {
 })
 </script>
 
-
-
-
 <style>
+body{
+  zoom: 100%;
+}
 html{
   overflow-y: auto !important;
 }
 </style>
 
 <style scoped>
-
 .v-main-container{
   height: calc(100vh - 50px);
   margin-bottom: 50px;

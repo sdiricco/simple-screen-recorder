@@ -25,6 +25,7 @@ interface Store {
   recorderPaused: boolean;
   recordAsGif: boolean;
   step: "home" | "choose-source" | "record" | "player";
+  forceStopSharing: boolean;
 }
 
 export const useMainStore = defineStore("main", {
@@ -58,7 +59,8 @@ export const useMainStore = defineStore("main", {
 
       recordAsGif: false,
 
-      step: 'home'
+      step: 'home',
+      forceStopSharing: false,
     },
   getters: {
     getVideoOptionSelected: (state) => state.recordingVideoOptions[state.recordingVideoOptionSelectedIdx],
@@ -123,6 +125,9 @@ export const useMainStore = defineStore("main", {
     async requestScreenStream(){
       try {
         this.screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        this.screenStream.getVideoTracks()[0].onended = () => {
+          this.forceStopSharing = true;
+        }
         this.screenPermissions = true;
       } catch (error:any) {
         //handle error (alert user)
